@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
+    "@whop/checkout": "^0.0.52",
+    "@whop/sdk": "^0.0.30",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"

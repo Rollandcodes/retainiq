@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +25,44 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              try {
+                var t = localStorage.getItem('theme');
+                var d = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (d) document.documentElement.classList.add('dark');
+              } catch(_) {}
+            })();
+          `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="min-h-screen bg-background text-foreground">
+          <header className="flex items-center justify-between border-b px-6 py-4">
+            <div className="flex items-center gap-6">
+              <Link href="/" className="text-lg font-semibold">
+                RetainIQ
+              </Link>
+              <nav className="flex items-center gap-4 text-sm">
+                <Link href="/dashboard" className="hover:underline">
+                  Dashboard
+                </Link>
+                <Link href="/members" className="hover:underline">
+                  Members
+                </Link>
+              </nav>
+            </div>
+            <ThemeToggle />
+          </header>
+          <main className="px-6 py-6">{children}</main>
+        </div>
       </body>
     </html>
   );
